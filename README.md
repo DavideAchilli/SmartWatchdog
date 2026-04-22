@@ -10,7 +10,7 @@ In this project, we build a watchdog, that is, an external device that monitors 
 
 ## General Description
 
-This device is designed to monitor any computer with a USB port, including Raspberry Pi and other single-board computers with USB connectivity. It is built around an Arduino Nano based on ATmega328P (Figure 1), connected via USB cable to the monitored computer. Through an output pin, it controls a relay that, when energized, disconnects power to the protected system.
+This device is designed to monitor any computer with a USB port, including Raspberry Pi and other single-board computers with USB connectivity. It is built around an Arduino Nano based on ATmega328P, connected via USB cable to the monitored computer. Through an output pin, it controls a relay that, when energized, disconnects power to the protected system.
 
 The computer connected over USB sees the Arduino as a serial port at 115200 bps and can communicate with the watchdog. The computer's task is to continuously stimulate this serial port by periodically sending the text `ALIVE`. If Arduino does not receive this string for longer than a configured timeout, it assumes the computer is frozen and performs a full power cycle.
 
@@ -20,7 +20,7 @@ In this implementation, the computer continuously checks the health of its own p
 
 ## Power Supply
 
-In this project setup, it is important to ensure Arduino has an independent power source and is not powered by the same devices it is meant to shut down. In particular, it should not receive power from USB, but from the VIN pin when using unregulated voltage above 5V, or directly from the +5V pin when a regulated 5V source is available (Figure 2).
+In this project setup, it is important to ensure Arduino has an independent power source and is not powered by the same devices it is meant to shut down. In particular, it should not receive power from USB, but from the VIN pin when using unregulated voltage above 5V, or directly from the +5V pin when a regulated 5V source is available.
 
 If voltage levels are compatible with Arduino, it can be powered directly from the main supply upstream of the relay used to shut down the other devices. If it is not possible or practical to provide separate power, Arduino can be kept alive with a supercapacitor long enough to perform shutdown and restart. This means energizing the relay for a few seconds, enough time for all peripherals to actually turn off.
 
@@ -30,7 +30,10 @@ In any case, Arduino USB power is protected by a diode, so there is no risk that
 
 ## Power-Cut Circuit
 
-The power-cut circuit (Figure 3) is centered on a 5V SPDT relay. With the relay de-energized, the contact conducts and everything is powered. When the relay is energized, the contact disconnects power and the connected devices shut down. This choice also ensures that, in case of circuit failure, the rest of the system remains powered with the relay at rest, sacrificing only watchdog-controlled shutdown capability.
+The power-cut circuit is centered on a 5V SPDT relay. With the relay de-energized, the contact conducts and everything is powered. When the relay is energized, the contact disconnects power and the connected devices shut down. This choice also ensures that, in case of circuit failure, the rest of the system remains powered with the relay at rest, sacrificing only watchdog-controlled shutdown capability.
+
+![Power-cut circuit schematic](img/circuit.png)
+
 
 The relay receives 5V on pin A1, while the ground path from pin A2 is controlled by a BS170, an N-channel logic-level MOSFET with a low enough gate threshold to be driven by a 5V Arduino output.
 
