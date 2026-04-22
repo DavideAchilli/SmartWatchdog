@@ -71,6 +71,24 @@ The same commands are also used to set `boot`, `alive`, and `off` timings, which
 
 Table of commands accepted by the watchdog on Arduino.
 
+| COMMAND      | Descritpion |
+|--------------|-------------|
+| `HELP`         | Show help |
+| `VER`          | show the version |
+| `ALIVE`        | inform the watchdog that the client is alive |
+| `STATUS`       | see current timeout limits and status |
+| `SETBOOT` _sec_  | set the boot timeout to the indicated number of seconds _sec_ |
+| `SETALIVE` _sec_ | set the alive timeout to the indicated number of seconds _sec_ |
+| `SETOFF` _sec_   | set the off time to the indicated number of seconds _sec_ |
+| `REBOOT` _sec_   | trigger a reboot after the indicated number of seconds _sec_; send ALIVE to cancel |
+| `DISABLE`      | disable the watchdog |
+| `ENABLE`       | enable the watchdog |
+| `ON`           | power the relay (debug) |
+| `OFF`          | unpower the relay (debug) |
+| `DEBUGADD` _sec_ | add _sec_ seconds to current time (debug) |
+| `DEBUGSUB` _sec_ | subtract _sec_ seconds from current time (debug) |
+| `NOWD`         | disable the internal watchdog reset; used to test activation of the ATMega328 watchdog |
+
 ## Watchdog for the Watchdog
 
 Naturally, the watchdog itself is a small computer and may also freeze, so it should have its own watchdog. ATmega328P microcontrollers include a watchdog function: independent hardware circuitry from the CPU that can reset the MCU if it does not receive a timely heartbeat proving software is still alive.
@@ -122,14 +140,14 @@ The parameters for script `WatchDogHostClient.py` are as follows.
 
 | Parameter | Description |
 |-----------|-------------|
-| -h, --help | Show the help text with available commands |
-| --serial port | Serial port to which the watchdog Arduino is connected; if not specified, defaults to `/dev/ttyUSB0`. |
-| --alive seconds | Interval between `ALIVE` messages in seconds; if not specified, defaults to 30 seconds. |
-| --log filename | Full path of the log file to generate; if not specified, no log file is created. Enabling the log is recommended to track reboot history and their causes. |
-| --cli_host ip-address | Listening address for the telnet command server; default: `127.0.0.1` |
-| --cli_port port | Port for the telnet command server; default: `5001` |
-| --sys_poll seconds | Polling interval for system data such as temperature and undervoltage; if not specified, system data is not collected |
-| --ping a.b.c.d ... | IP addresses to ping, space-separated. Example: `--ping 1.1.1.1 8.8.8.8`. If not specified, network connectivity is not monitored |
-| --ping_wait seconds | Pause in seconds between consecutive pings; typically 60 s |
-| --max_net_unreach seconds | Maximum time in seconds that consecutive ping failures are tolerated before declaring a serious network disconnection. It is advisable to wait a few minutes when pings fail, as these are usually temporary outages that resolve on their own. Default: 600 s (10 minutes). |
+| `-h`, `--help` | Show the help text with available commands |
+| `--serial` port | Serial port to which the watchdog Arduino is connected; if not specified, defaults to `/dev/ttyUSB0`. |
+| `--alive` seconds | Interval between `ALIVE` messages in seconds; if not specified, defaults to 30 seconds. |
+| `--log` filename | Full path of the log file to generate; if not specified, no log file is created. Enabling the log is recommended to track reboot history and their causes. |
+| `--cli_host` ip-address | Listening address for the telnet command server; default: `127.0.0.1` |
+| `--cli_port` port | Port for the telnet command server; default: `5001` |
+| `--sys_poll` seconds | Polling interval for system data such as temperature and undervoltage; if not specified, system data is not collected |
+| `--ping` a.b.c.d ... | IP addresses to ping, space-separated. Example: `--ping 1.1.1.1 8.8.8.8`. If not specified, network connectivity is not monitored |
+| `--ping_wait` seconds | Pause in seconds between consecutive pings; typically 60 s |
+| `--max_net_unreach` seconds | Maximum time in seconds that consecutive ping failures are tolerated before declaring a serious network disconnection. It is advisable to wait a few minutes when pings fail, as these are usually temporary outages that resolve on their own. Default: 600 s (10 minutes). |
 
